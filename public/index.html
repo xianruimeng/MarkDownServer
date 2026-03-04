@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Editor</title>
+
+  <!-- CodeMirror 5 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.css">
+
+  <!-- highlight.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css">
+
+  <!-- App styles -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h2>Files</h2>
+        <button id="new-file-btn" title="New file">+</button>
+      </div>
+      <ul id="file-list"></ul>
+    </aside>
+    <main class="editor-area">
+      <div class="toolbar">
+        <span id="current-file-name">No file selected</span>
+        <div class="toolbar-actions">
+          <button id="save-btn" disabled>Save</button>
+          <button id="delete-btn" disabled>Delete</button>
+        </div>
+      </div>
+      <div class="panes">
+        <div class="pane editor-pane">
+          <textarea id="editor"></textarea>
+        </div>
+        <div class="pane preview-pane">
+          <div id="preview" class="markdown-body"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- CodeMirror 5 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/markdown/markdown.min.js"></script>
+
+  <!-- Marked -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- highlight.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+
+  <!-- App -->
+  <script src="/js/app.js"></script>
+</body>
+</html>
