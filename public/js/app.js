@@ -283,6 +283,16 @@
 
     document.body.appendChild(dialog);
 
+    // Prevent mouseup events in dialog from triggering text selection handler
+    dialog.addEventListener('mouseup', (e) => {
+      e.stopPropagation();
+    });
+
+    // Prevent mousedown events from interfering
+    dialog.addEventListener('mousedown', (e) => {
+      e.stopPropagation();
+    });
+
     // Event listeners
     dialog.querySelector('.comment-dialog-close').addEventListener('click', () => dialog.remove());
     dialog.querySelector('.comment-dialog-btn.secondary').addEventListener('click', () => dialog.remove());
@@ -295,7 +305,13 @@
     });
 
     // Auto-focus textarea
-    setTimeout(() => dialog.querySelector('.comment-dialog-input').focus(), 100);
+    setTimeout(() => {
+      const textarea = dialog.querySelector('.comment-dialog-input');
+      if (textarea) {
+        textarea.focus();
+        textarea.click();
+      }
+    }, 100);
   }
 
   async function addComment(selectedText, commentText, range) {
