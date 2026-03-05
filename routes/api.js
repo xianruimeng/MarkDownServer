@@ -145,13 +145,13 @@ router.get('/:filename/comments', async (req, res) => {
 router.post('/:filename/comments', async (req, res) => {
   try {
     const { filename } = req.sanitizedFile;
-    const { author, content } = req.body;
+    const { author, content, authorColor, selectedText } = req.body;
 
     if (!author || !content) {
       return res.status(400).json({ error: 'Author and content are required' });
     }
 
-    const comment = await commentsService.addComment(filename, author, content);
+    const comment = await commentsService.addComment(filename, author, content, authorColor, selectedText);
     res.status(201).json({ comment });
   } catch (err) {
     res.status(500).json({ error: 'Failed to add comment' });
