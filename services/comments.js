@@ -29,13 +29,16 @@ async function saveComments(filename, comments) {
 }
 
 // Add a new comment
-async function addComment(filename, author, content) {
+async function addComment(filename, author, content, authorColor = null, selectedText = null) {
   const comments = await loadComments(filename);
   const newComment = {
     id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
     author,
     content,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    authorColor,
+    selectedText,
+    replies: []
   };
   comments.push(newComment);
   await saveComments(filename, comments);

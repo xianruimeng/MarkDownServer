@@ -24,13 +24,28 @@
       <ul id="file-list"></ul>
     </aside>
     <main class="editor-area">
+      <div class="document-toolbar">
+        <button class="doc-toolbar-btn" id="doc-new-btn" title="New file">
+          <span>+ New</span>
+        </button>
+        <button class="doc-toolbar-btn" id="doc-save-btn" disabled title="Save (Cmd/Ctrl+S)">
+          <span>💾 Save</span>
+        </button>
+        <button class="doc-toolbar-btn" id="doc-delete-btn" disabled title="Delete file">
+          <span>🗑️ Delete</span>
+        </button>
+        <div class="doc-toolbar-separator"></div>
+        <button class="doc-toolbar-btn" id="toggle-comment-mode-btn" disabled title="Toggle comment mode">
+          <span id="comment-mode-icon">💬</span>
+          <span id="comment-mode-text">Add Comments</span>
+        </button>
+      </div>
       <div class="toolbar">
         <span id="current-file-name">No file selected</span>
         <div class="toolbar-actions">
           <div id="active-users" class="active-users" title="Active users"></div>
           <button id="save-btn" disabled>Save</button>
           <button id="delete-btn" disabled>Delete</button>
-          <button id="toggle-comments-btn" disabled>Comments</button>
         </div>
       </div>
       <div class="panes">
@@ -42,17 +57,6 @@
         </div>
       </div>
     </main>
-    <aside class="comments-panel" id="comments-panel">
-      <div class="comments-header">
-        <h3>Comments</h3>
-        <button id="close-comments-btn">&times;</button>
-      </div>
-      <div class="comments-list" id="comments-list"></div>
-      <div class="comment-form">
-        <textarea id="comment-input" placeholder="Add a comment..."></textarea>
-        <button id="add-comment-btn">Post Comment</button>
-      </div>
-    </aside>
   </div>
 
   <!-- CodeMirror 5 -->
