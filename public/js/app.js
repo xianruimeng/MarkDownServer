@@ -210,9 +210,8 @@
     const rect = range.getBoundingClientRect();
     const button = document.createElement('button');
     button.id = 'add-comment-floating-btn';
-    button.className = 'floating-comment-btn';
+    button.className = 'floating-comment-btn show';
     button.textContent = '+ Add Comment';
-    button.style.position = 'fixed';
     button.style.left = `${rect.right + 10}px`;
     button.style.top = `${rect.top}px`;
 
@@ -235,32 +234,28 @@
 
     // Create dialog
     const dialog = document.createElement('div');
-    dialog.className = 'comment-dialog';
+    dialog.className = 'comment-dialog show';
     dialog.innerHTML = `
       <div class="comment-dialog-header">
-        <strong>Add Comment</strong>
-        <button class="close-dialog-btn">&times;</button>
+        <h4>Add Comment</h4>
+        <button class="comment-dialog-close">&times;</button>
       </div>
-      <div class="comment-dialog-selected-text">"${escapeHtml(selectedText.substring(0, 100))}${selectedText.length > 100 ? '...' : ''}"</div>
-      <textarea class="comment-dialog-input" placeholder="Add your comment..." autofocus></textarea>
-      <div class="comment-dialog-actions">
-        <button class="cancel-comment-btn">Cancel</button>
-        <button class="post-comment-btn">Post</button>
+      <div class="comment-dialog-selected">"${escapeHtml(selectedText.substring(0, 100))}${selectedText.length > 100 ? '...' : ''}"</div>
+      <div class="comment-dialog-body">
+        <textarea class="comment-dialog-input" placeholder="Add your comment..." autofocus></textarea>
+        <div class="comment-dialog-actions">
+          <button class="comment-dialog-btn secondary">Cancel</button>
+          <button class="comment-dialog-btn primary">Post</button>
+        </div>
       </div>
     `;
-
-    // Position dialog
-    const rect = range.getBoundingClientRect();
-    dialog.style.position = 'fixed';
-    dialog.style.left = `${Math.min(rect.right + 10, window.innerWidth - 350)}px`;
-    dialog.style.top = `${rect.top}px`;
 
     document.body.appendChild(dialog);
 
     // Event listeners
-    dialog.querySelector('.close-dialog-btn').addEventListener('click', () => dialog.remove());
-    dialog.querySelector('.cancel-comment-btn').addEventListener('click', () => dialog.remove());
-    dialog.querySelector('.post-comment-btn').addEventListener('click', async () => {
+    dialog.querySelector('.comment-dialog-close').addEventListener('click', () => dialog.remove());
+    dialog.querySelector('.comment-dialog-btn.secondary').addEventListener('click', () => dialog.remove());
+    dialog.querySelector('.comment-dialog-btn.primary').addEventListener('click', async () => {
       const commentText = dialog.querySelector('.comment-dialog-input').value.trim();
       if (commentText && currentUser) {
         await addComment(selectedText, commentText, range);
@@ -269,7 +264,7 @@
     });
 
     // Auto-focus textarea
-    dialog.querySelector('.comment-dialog-input').focus();
+    setTimeout(() => dialog.querySelector('.comment-dialog-input').focus(), 100);
   }
 
   async function addComment(selectedText, commentText, range) {
@@ -382,34 +377,39 @@
 
     const rect = highlightElement.getBoundingClientRect();
     const thread = document.createElement('div');
-    thread.className = 'comment-thread';
-    thread.style.position = 'fixed';
-    thread.style.left = `${Math.min(rect.right + 10, window.innerWidth - 350)}px`;
-    thread.style.top = `${rect.top}px`;
+    thread.className = 'comment-thread show';
 
-    let html = '<div class="comment-thread-header">Comments</div>';
-    html += '<div class="comment-thread-list">';
+    let html = `
+      <div class="comment-thread-header">
+        <h4>Comments</h4>
+        <button class="comment-thread-close">&times;</button>
+      </div>
+      <div class="comment-thread-selected">"${escapeHtml(threadComments[0].selectedText)}"</div>
+      <div class="comment-thread-body">
+    `;
 
     threadComments.forEach(comment => {
       const color = comment.authorColor || '#6366f1';
       html += `
         <div class="comment-thread-item">
-          <div class="comment-thread-author">
+          <div class="comment-thread-item-header">
             <span class="comment-author-badge" style="background-color: ${color}">${comment.author.charAt(0)}</span>
-            <strong>${escapeHtml(comment.author)}</strong>
-            <span class="comment-time">${formatTime(comment.timestamp)}</span>
+            <span class="comment-thread-item-author">${escapeHtml(comment.author)}</span>
+            <span class="comment-thread-item-time">${formatTime(comment.timestamp)}</span>
           </div>
-          <div class="comment-thread-content">${escapeHtml(comment.content)}</div>
-          <button class="delete-comment-btn" data-id="${comment.id}">Delete</button>
+          <div class="comment-thread-item-content">${escapeHtml(comment.content)}</div>
+          <button class="reply-btn danger" data-id="${comment.id}">Delete</button>
         </div>
       `;
     });
 
-    html += '</div>';
     html += `
+      </div>
       <div class="comment-thread-reply">
         <textarea class="reply-input" placeholder="Reply..."></textarea>
-        <button class="reply-btn">Reply</button>
+        <div class="reply-actions">
+          <button class="reply-btn primary">Reply</button>
+        </div>
       </div>
     `;
 
@@ -417,14 +417,16 @@
     document.body.appendChild(thread);
 
     // Add event listeners
-    thread.querySelectorAll('.delete-comment-btn').forEach(btn => {
+    thread.querySelector('.comment-thread-close').addEventListener('click', () => thread.remove());
+
+    thread.querySelectorAll('.reply-btn.danger').forEach(btn => {
       btn.addEventListener('click', async () => {
         await deleteComment(btn.dataset.id);
         thread.remove();
       });
     });
 
-    thread.querySelector('.reply-btn').addEventListener('click', async () => {
+    thread.querySelector('.reply-btn.primary').addEventListener('click', async () => {
       const replyText = thread.querySelector('.reply-input').value.trim();
       if (replyText && currentUser) {
         await addComment(threadComments[0].selectedText, replyText, null);
