@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs/promises');
 const config = require('../config');
 const { sanitizeFilename } = require('../middleware/sanitize');
+const commentsService = require('../services/comments');
 
 const router = express.Router();
 
@@ -112,7 +113,7 @@ router.put('/:filename', async (req, res) => {
 // DELETE /api/files/:filename - Delete a file
 router.delete('/:filename', async (req, res) => {
   try {
-    const { fullPath } = req.sanitizedFile;
+    const { filename, fullPath } = req.sanitizedFile;
 
     try {
       await fs.access(fullPath);
@@ -121,9 +122,56 @@ router.delete('/:filename', async (req, res) => {
     }
 
     await fs.unlink(fullPath);
+    // Also delete associated comments
+    await commentsService.deleteAllComments(filename);
     res.json({ message: 'File deleted' });
   } catch (err) {
     res.status(500).json({ error: 'Failed to delete file' });
+  }
+});
+
+// GET /api/files/:filename/comments - Get comments for a file
+router.get('/:filename/comments', async (req, res) => {
+  try {
+    const { filename } = req.sanitizedFile;
+    const comments = await commentsService.loadComments(filename);
+    res.json({ comments });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to load comments' });
+  }
+});
+
+// POST /api/files/:filename/comments - Add a comment
+router.post('/:filename/comments', async (req, res) => {
+  try {
+    const { filename } = req.sanitizedFile;
+    const { author, content } = req.body;
+
+    if (!author || !content) {
+      return res.status(400).json({ error: 'Author and content are required' });
+    }
+
+    const comment = await commentsService.addComment(filename, author, content);
+    res.status(201).json({ comment });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to add comment' });
+  }
+});
+
+// DELETE /api/files/:filename/comments/:commentId - Delete a comment
+router.delete('/:filename/comments/:commentId', async (req, res) => {
+  try {
+    const { filename } = req.sanitizedFile;
+    const { commentId } = req.params;
+
+    const deleted = await commentsService.deleteComment(filename, commentId);
+    if (!deleted) {
+      return res.status(404).json({ error: 'Comment not found' });
+    }
+
+    res.json({ message: 'Comment deleted' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete comment' });
   }
 });
 
