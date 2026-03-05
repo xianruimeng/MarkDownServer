@@ -141,6 +141,49 @@ html, body {
   min-width: 0;
 }
 
+/* Document Toolbar (Google Docs style) */
+.document-toolbar {
+  height: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-secondary);
+}
+
+.doc-toolbar-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.doc-toolbar-btn:hover:not(:disabled) {
+  background: var(--accent-glow);
+  color: var(--text-primary);
+}
+
+.doc-toolbar-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.doc-toolbar-separator {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  margin: 0 4px;
+}
+
 /* Toolbar */
 .toolbar {
   height: var(--toolbar-height);
@@ -286,119 +329,145 @@ html, body {
 
 /* Preview pane */
 .preview-pane {
-  background: var(--bg-preview);
+  background: #ffffff;
 }
 
 .markdown-body {
   padding: 32px;
   max-width: 800px;
-  font-size: 15px;
-  line-height: 1.7;
-  color: #1f2937;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #2d3748;
 }
 
 .markdown-body h1 {
-  font-size: 2em;
+  font-size: 2.25em;
   margin-bottom: 0.5em;
   padding-bottom: 0.3em;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 2px solid #e2e8f0;
+  color: #1a202c;
+  font-weight: 700;
 }
 
 .markdown-body h2 {
-  font-size: 1.5em;
+  font-size: 1.75em;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
   padding-bottom: 0.25em;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e2e8f0;
+  color: #2d3748;
+  font-weight: 600;
 }
 
 .markdown-body h3 {
-  font-size: 1.25em;
+  font-size: 1.35em;
   margin-top: 1.25em;
   margin-bottom: 0.5em;
+  color: #2d3748;
+  font-weight: 600;
 }
 
 .markdown-body p {
-  margin-bottom: 1em;
+  margin-bottom: 1.25em;
+  color: #4a5568;
 }
 
 .markdown-body ul,
 .markdown-body ol {
-  margin-bottom: 1em;
+  margin-bottom: 1.25em;
   padding-left: 2em;
+  color: #4a5568;
 }
 
 .markdown-body li {
-  margin-bottom: 0.25em;
+  margin-bottom: 0.5em;
 }
 
 .markdown-body code {
-  background: #f3f4f6;
-  padding: 2px 6px;
-  border-radius: 4px;
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  padding: 3px 8px;
+  border-radius: 5px;
   font-size: 0.9em;
-  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #c7254e;
 }
 
 .markdown-body pre {
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 8px;
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 10px;
   overflow-x: auto;
-  margin-bottom: 1em;
+  margin-bottom: 1.5em;
+  border: 1px solid #334155;
 }
 
 .markdown-body pre code {
   background: none;
+  border: none;
   padding: 0;
   border-radius: 0;
-  font-size: 0.875em;
-  line-height: 1.6;
+  font-size: 0.9em;
+  line-height: 1.7;
+  color: #e2e8f0;
 }
 
 .markdown-body blockquote {
-  border-left: 4px solid #d1d5db;
-  padding: 0.5em 1em;
-  margin-bottom: 1em;
-  color: #6b7280;
+  border-left: 4px solid #6366f1;
+  background: #f8f9fc;
+  padding: 1em 1.5em;
+  margin-bottom: 1.5em;
+  color: #4a5568;
+  border-radius: 0 6px 6px 0;
 }
 
 .markdown-body a {
-  color: #2563eb;
+  color: #6366f1;
   text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
 }
 
 .markdown-body a:hover {
+  color: #818cf8;
   text-decoration: underline;
 }
 
 .markdown-body img {
   max-width: 100%;
-  border-radius: 8px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .markdown-body table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 1em;
+  margin-bottom: 1.5em;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .markdown-body th,
 .markdown-body td {
-  border: 1px solid #e5e7eb;
-  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  padding: 12px 16px;
   text-align: left;
 }
 
 .markdown-body th {
-  background: #f3f4f6;
+  background: #f7fafc;
   font-weight: 600;
+  color: #2d3748;
+}
+
+.markdown-body td {
+  color: #4a5568;
 }
 
 .markdown-body hr {
   border: none;
-  border-top: 1px solid #e5e7eb;
-  margin: 2em 0;
+  border-top: 2px solid #e2e8f0;
+  margin: 2.5em 0;
 }
 
 /* Notifications */

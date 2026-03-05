@@ -24,6 +24,22 @@
       <ul id="file-list"></ul>
     </aside>
     <main class="editor-area">
+      <div class="document-toolbar">
+        <button class="doc-toolbar-btn" id="doc-new-btn" title="New file">
+          <span>+ New</span>
+        </button>
+        <button class="doc-toolbar-btn" id="doc-save-btn" disabled title="Save (Cmd/Ctrl+S)">
+          <span>💾 Save</span>
+        </button>
+        <button class="doc-toolbar-btn" id="doc-delete-btn" disabled title="Delete file">
+          <span>🗑️ Delete</span>
+        </button>
+        <div class="doc-toolbar-separator"></div>
+        <button class="doc-toolbar-btn" id="toggle-comment-mode-btn" disabled title="Toggle comment mode">
+          <span id="comment-mode-icon">💬</span>
+          <span id="comment-mode-text">Add Comments</span>
+        </button>
+      </div>
       <div class="toolbar">
         <span id="current-file-name">No file selected</span>
         <div class="toolbar-actions">

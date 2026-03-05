@@ -22,6 +22,13 @@
   const newFileBtn = document.getElementById('new-file-btn');
   const currentFileName = document.getElementById('current-file-name');
   const activeUsersEl = document.getElementById('active-users');
+  // Document toolbar
+  const docNewBtn = document.getElementById('doc-new-btn');
+  const docSaveBtn = document.getElementById('doc-save-btn');
+  const docDeleteBtn = document.getElementById('doc-delete-btn');
+  const toggleCommentModeBtn = document.getElementById('toggle-comment-mode-btn');
+
+  let commentModeEnabled = true; // Comment mode enabled by default
 
   // --- Initialize ---
   function init() {
@@ -128,6 +135,12 @@
     deleteBtn.addEventListener('click', deleteFile);
     newFileBtn.addEventListener('click', createNewFile);
 
+    // Document toolbar listeners
+    docNewBtn.addEventListener('click', createNewFile);
+    docSaveBtn.addEventListener('click', saveFile);
+    docDeleteBtn.addEventListener('click', deleteFile);
+    toggleCommentModeBtn.addEventListener('click', toggleCommentMode);
+
     // Ctrl/Cmd+S to save
     document.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 's') {
@@ -140,6 +153,24 @@
     setupPreviewCommentHandlers();
 
     loadFileList();
+  }
+
+  function toggleCommentMode() {
+    commentModeEnabled = !commentModeEnabled;
+    const icon = document.getElementById('comment-mode-icon');
+    const text = document.getElementById('comment-mode-text');
+
+    if (commentModeEnabled) {
+      icon.textContent = '💬';
+      text.textContent = 'Add Comments';
+      toggleCommentModeBtn.style.background = 'var(--accent-glow)';
+      toggleCommentModeBtn.style.color = 'var(--accent)';
+    } else {
+      icon.textContent = '✓';
+      text.textContent = 'Comments Off';
+      toggleCommentModeBtn.style.background = 'transparent';
+      toggleCommentModeBtn.style.color = 'var(--text-secondary)';
+    }
   }
 
   // --- Remote Cursor Management ---
@@ -187,7 +218,7 @@
     const selection = window.getSelection();
     const selectedText = selection.toString().trim();
 
-    if (!selectedText || !currentFile) {
+    if (!selectedText || !currentFile || !commentModeEnabled) {
       hideCommentButton();
       return;
     }
@@ -496,6 +527,9 @@
       setDirty(false);
       saveBtn.disabled = false;
       deleteBtn.disabled = false;
+      docSaveBtn.disabled = false;
+      docDeleteBtn.disabled = false;
+      toggleCommentModeBtn.disabled = false;
       updatePreview();
       highlightActiveFile();
 
@@ -538,6 +572,9 @@
       currentFileName.textContent = 'No file selected';
       saveBtn.disabled = true;
       deleteBtn.disabled = true;
+      docSaveBtn.disabled = true;
+      docDeleteBtn.disabled = true;
+      toggleCommentModeBtn.disabled = true;
       preview.innerHTML = '';
       setDirty(false);
       loadFileList();
