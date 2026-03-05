@@ -635,6 +635,8 @@ html, body {
   padding: 16px;
   flex: 1;
   overflow-y: auto;
+  position: relative;
+  z-index: 1;
 }
 
 .comment-dialog-input {
@@ -650,11 +652,15 @@ html, body {
   line-height: 1.5;
   resize: vertical;
   margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
 }
 
 .comment-dialog-input:focus {
   outline: none;
   border-color: var(--accent);
+  background: var(--bg-secondary);
 }
 
 .comment-dialog-actions {
@@ -837,11 +843,15 @@ html, body {
   line-height: 1.5;
   resize: vertical;
   margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
 }
 
 .reply-input:focus {
   outline: none;
   border-color: var(--accent);
+  background: var(--bg-primary);
 }
 
 .reply-actions {
