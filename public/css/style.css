@@ -7,18 +7,34 @@
 }
 
 :root {
-  --sidebar-width: 240px;
-  --toolbar-height: 48px;
-  --bg-primary: #1e1e2e;
-  --bg-secondary: #181825;
-  --bg-preview: #ffffff;
-  --text-primary: #cdd6f4;
-  --text-secondary: #a6adc8;
-  --accent: #89b4fa;
-  --accent-hover: #b4d0fb;
-  --border: #313244;
-  --danger: #f38ba8;
-  --danger-hover: #f5a3b8;
+  --sidebar-width: 260px;
+  --toolbar-height: 52px;
+  /* Modern dark theme with warm undertones */
+  --bg-primary: #0f0f1a;
+  --bg-secondary: #16161f;
+  --bg-tertiary: #1c1c27;
+  --bg-preview: #fafbfc;
+  /* Text colors with better hierarchy */
+  --text-primary: #e4e4e7;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  /* Vibrant accent colors */
+  --accent: #6366f1;
+  --accent-hover: #818cf8;
+  --accent-light: #a5b4fc;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  /* Semantic colors */
+  --success: #10b981;
+  --success-hover: #34d399;
+  --danger: #ef4444;
+  --danger-hover: #f87171;
+  --warning: #f59e0b;
+  /* Border and shadow */
+  --border: #27272a;
+  --border-light: #3f3f46;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
 }
 
 html, body {
@@ -43,6 +59,7 @@ html, body {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  box-shadow: var(--shadow-md);
 }
 
 .sidebar-header {
@@ -63,22 +80,25 @@ html, body {
 
 .sidebar-header button {
   background: var(--accent);
-  color: #1e1e2e;
+  color: white;
   border: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   font-size: 18px;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
 }
 
 .sidebar-header button:hover {
   background: var(--accent-hover);
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
 }
 
 #file-list {
@@ -88,24 +108,29 @@ html, body {
 }
 
 #file-list li {
-  padding: 10px 12px;
-  border-radius: 6px;
+  padding: 11px 14px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
   color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: background 0.15s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
 }
 
 #file-list li:hover {
-  background: rgba(137, 180, 250, 0.1);
+  background: var(--accent-glow);
+  border-color: var(--border-light);
+  transform: translateX(2px);
 }
 
 #file-list li.active {
-  background: rgba(137, 180, 250, 0.15);
-  color: var(--accent);
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  border-color: var(--accent);
+  font-weight: 500;
 }
 
 /* Editor area */
@@ -123,9 +148,10 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 0 20px;
   border-bottom: 1px solid var(--border);
   background: var(--bg-secondary);
+  box-shadow: var(--shadow-sm);
 }
 
 #current-file-name {
@@ -140,27 +166,35 @@ html, body {
 }
 
 .toolbar-actions button {
-  padding: 6px 16px;
+  padding: 8px 18px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.15s, opacity 0.15s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
 }
 
 .toolbar-actions button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 #save-btn {
   background: var(--accent);
-  color: #1e1e2e;
+  color: white;
 }
 
 #save-btn:hover:not(:disabled) {
   background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+#save-btn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 #delete-btn {
@@ -170,18 +204,21 @@ html, body {
 }
 
 #delete-btn:hover:not(:disabled) {
-  background: rgba(243, 139, 168, 0.1);
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--danger-hover);
+  color: var(--danger-hover);
 }
 
 #toggle-comments-btn {
-  background: transparent;
+  background: var(--bg-tertiary);
   color: var(--text-secondary);
   border: 1px solid var(--border);
 }
 
 #toggle-comments-btn:hover:not(:disabled) {
-  background: rgba(137, 180, 250, 0.1);
-  color: var(--accent);
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  border-color: var(--accent);
 }
 
 /* Active Users */
@@ -193,8 +230,8 @@ html, body {
 }
 
 .user-badge {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -204,6 +241,12 @@ html, body {
   color: white;
   cursor: default;
   border: 2px solid var(--bg-secondary);
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.user-badge:hover {
+  transform: scale(1.1);
 }
 
 /* Panes */
@@ -238,7 +281,7 @@ html, body {
 }
 
 .editor-pane .CodeMirror-linenumber {
-  color: #585b70;
+  color: var(--text-muted);
 }
 
 .editor-pane .CodeMirror-cursor {
@@ -246,11 +289,11 @@ html, body {
 }
 
 .editor-pane .CodeMirror-selected {
-  background: rgba(137, 180, 250, 0.2);
+  background: var(--accent-glow);
 }
 
 .editor-pane .CodeMirror-activeline-background {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 /* Preview pane */
@@ -372,18 +415,19 @@ html, body {
 
 /* Comments Panel */
 .comments-panel {
-  width: 320px;
-  min-width: 320px;
+  width: 340px;
+  min-width: 340px;
   background: var(--bg-secondary);
   border-left: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   position: fixed;
-  right: -320px;
+  right: -340px;
   top: 0;
   bottom: 0;
-  transition: right 0.3s ease;
+  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 50;
+  box-shadow: var(--shadow-lg);
 }
 
 .comments-panel.open {
@@ -439,11 +483,18 @@ html, body {
 }
 
 .comment {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 8px;
-  padding: 12px;
+  background: var(--bg-tertiary);
+  border-radius: 10px;
+  padding: 14px;
   margin-bottom: 12px;
   border: 1px solid var(--border);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.comment:hover {
+  border-color: var(--border-light);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
 }
 
 .comment-header {
@@ -477,13 +528,16 @@ html, body {
   color: var(--danger);
   font-size: 11px;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: background 0.15s;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
 }
 
 .delete-comment-btn:hover {
-  background: rgba(243, 139, 168, 0.1);
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--danger-hover);
+  transform: scale(1.05);
 }
 
 .comment-form {
@@ -514,37 +568,46 @@ html, body {
 
 #add-comment-btn {
   width: 100%;
-  padding: 8px 16px;
+  padding: 10px 16px;
   background: var(--accent);
-  color: #1e1e2e;
+  color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
 }
 
 #add-comment-btn:hover {
   background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+#add-comment-btn:active {
+  transform: translateY(0);
 }
 
 /* Notifications */
 .notification {
   position: fixed;
-  top: 70px;
-  right: 20px;
-  background: var(--bg-secondary);
+  top: 72px;
+  right: 24px;
+  background: var(--bg-tertiary);
   color: var(--text-primary);
-  padding: 12px 16px;
-  border-radius: 8px;
-  border-left: 3px solid var(--accent);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 14px 18px;
+  border-radius: 10px;
+  border-left: 4px solid var(--accent);
+  box-shadow: var(--shadow-lg);
   font-size: 13px;
   opacity: 0;
-  transform: translateX(100px);
-  transition: opacity 0.3s, transform 0.3s;
+  transform: translateX(120px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1000;
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
 }
 
 .notification.show {
